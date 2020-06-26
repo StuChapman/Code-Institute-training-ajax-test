@@ -42,20 +42,30 @@ function getTableHeaders(obj) {
 }
 
 function writeToDocument(type) {
+    var tableRows = [];
     var el = document.getElementById("data");
     el.innerHTML = "";
+
     getData(type, function(data) {
         data = data.results;
         var tableHeaders = getTableHeaders(data[0]);
 
         data.forEach(function(item) {
+            var dataRow =[];
+
             Object.keys(item).forEach(function(key) {
-                console.log(key);
+                var rowData = item[key].toString();
+                var truncatedData = rowData.substring(0, 15);
+                dataRow.push(`<td>${truncatedData}</td>`)
             });
+            tableRows.push(`<tr>${dataRow}</tr>`);
+            //Object.keys(item).forEach(function(key) {
+                //console.log(key);
+            //});
             //el.innerHTML += "<p>" + item.name + "</p>";
         });
         
-        el.innerHTML = `<table>${tableHeaders}</table>`; 
+        el.innerHTML = `<table>${tableHeaders}${tableRows}</table>`; 
     });
 }
 
