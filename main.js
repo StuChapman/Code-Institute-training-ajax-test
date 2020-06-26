@@ -1,10 +1,9 @@
-function getData(cb) {
+const baseURL =  "https://ci-swapi.herokuapp.com/api/";
+
+function getData(type, cb) {
  
     var xhr = new XMLHttpRequest();
     //var data;
-
-    xhr.open("GET", "https://ci-swapi.herokuapp.com/api/");
-    xhr.send();
 
     //function setData(jsonData) {
     //    data = jsonData;
@@ -21,15 +20,46 @@ function getData(cb) {
             //data = this.responseText;
             //console.log(data);
         }
-    };
-   
+    };   
+
+    xhr.open("GET", baseURL + type + "/");
+    xhr.send();
 }
 
-function printDataToConsole(data) {
-    console.log(data);
+
+//function printDataToConsole(data) {
+    //console.log(data);
+//}
+
+function getTableHeaders(obj) {
+    var tableHeaders = [];
+
+    Object.keys(obj).forEach(function(key) {
+        tableHeaders.push(`<td>${key}</td>`)
+    });
+
+    return `<tr>${tableHeaders}</tr>`;
 }
 
-getData(printDataToConsole);
+function writeToDocument(type) {
+    var el = document.getElementById("data");
+    el.innerHTML = "";
+    getData(type, function(data) {
+        data = data.results;
+        var tableHeaders = getTableHeaders(data[0]);
+
+        data.forEach(function(item) {
+            Object.keys(item).forEach(function(key) {
+                console.log(key);
+            });
+            //el.innerHTML += "<p>" + item.name + "</p>";
+        });
+        
+        el.innerHTML = `<table>${tableHeaders}</table>`; 
+    });
+}
+
+//getData(printDataToConsole);
 
 //setTimeout(function() {
     //console.log(data);
